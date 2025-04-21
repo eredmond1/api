@@ -1,4 +1,6 @@
 using api.Data;
+using api.Interface;
+using api.Repository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +14,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
     options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"), new MySqlServerVersion(new Version(8, 0, 0)) // Replace with your MySQL version
     ));;
+
+builder.Services.AddScoped<IStockRepositiory, StockRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
