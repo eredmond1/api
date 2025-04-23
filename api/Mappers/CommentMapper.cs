@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using api.Dtos.Comment;
 using api.Models;
+using Microsoft.Identity.Client;
 
 namespace api.Mappers
 {
@@ -28,6 +29,16 @@ namespace api.Mappers
                 Content = commentDto.Content,
                 StockID = stockId,
 
+            };
+
+        }
+
+        public static Comment ToCommentFromUpdateDTO(this UpdateCommentRequestDto updateDto)
+        {
+            return new Comment
+            {
+                Title = updateDto.Title, 
+                Content = updateDto.Content,
             };
         }
     }
