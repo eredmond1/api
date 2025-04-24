@@ -42,7 +42,7 @@ namespace api.Repository
             //this is how comments are included from the database call 
             var stocks =  _context.Stock.Include(c => c.Comments).AsQueryable();
 
-            //how to do the query filter
+            //this is how you filter the querys (query parameters)
             if (!string.IsNullOrWhiteSpace(query.CompanyName))
             {
                 stocks = stocks.Where(s => s.CompanyName.Contains(query.CompanyName));
@@ -51,6 +51,15 @@ namespace api.Repository
             if(!string.IsNullOrWhiteSpace(query.Symbol))
             {
                 stocks = stocks.Where(s => s.Symbol.Contains(query.Symbol));
+            }
+            
+            //this is how u rearange(sort) a query 
+            if (!string.IsNullOrWhiteSpace(query.SoryBy))
+            {
+                if(query.SoryBy.Equals("Symbol", StringComparison.OrdinalIgnoreCase))
+                {
+                    stocks = query.IsDecsending ? stocks.OrderByDescending(s => s.Symbol): stocks.OrderBy(s => s.Symbol);
+                }
             }
 
             return await stocks.ToListAsync();
