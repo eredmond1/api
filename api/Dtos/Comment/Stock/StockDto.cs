@@ -18,6 +18,7 @@ namespace api.Dtos.Comment.Stock
         public string Indestry { get; set; } = string.Empty;
         public long MarketCap { get; set; }
 
+        //this is how comments are inclided in the dto
         public List<CommentDto> Comments { get; set; } = new List<CommentDto>();
     }
 }

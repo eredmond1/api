@@ -5,6 +5,7 @@ using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 using api.Data;
 using api.Dtos.Comment.Stock;
+using api.Helpers;
 using api.Interface;
 using api.Mappers;
 using api.Models;
@@ -26,14 +27,14 @@ namespace api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] QueryObject query)
         {
             if(!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var stocks = await _stockrepo.GetAllAsync();
+            var stocks = await _stockrepo.GetAllAsync(query);
             var stocksDto = stocks.Select(s => s.ToStockDto());
             return Ok(stocksDto);
         }
@@ -92,7 +93,7 @@ namespace api.Controllers
             {
                 return BadRequest(ModelState);
             }
-            
+
             var stockModel = await _stockrepo.DeleteAsync(id);
 
             if (stockModel == null)
