@@ -15,13 +15,29 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
 });
 
+
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
     options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"), new MySqlServerVersion(new Version(8, 0, 0)) // Replace with your MySQL version
     ));;
 
 builder.Services.AddScoped<IStockRepositiory, StockRepository>();
 builder.Services.AddScoped<ICommentRepositiory, CommentRepositiory>();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins",
+        policy =>
+        {
+            policy.AllowAnyOrigin()
+                  .AllowAnyMethod()
+                  .AllowAnyHeader();
+        });
+});
+
+
 var app = builder.Build();
+app.UseCors("AllowAllOrigins");
+
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
